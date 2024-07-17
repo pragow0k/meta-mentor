@@ -17,7 +17,7 @@ DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'pam', 'libpam', '', d)}"
 
 FILESEXTRAPATHS_prepend := "${LAYERDIR_core}/recipes-connectivity/${PN}/${PN}:"
 
-SRC_URI = "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.5p1.tar.gz \
+SRC_URI = "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.7p1.tar.gz \
            file://sshd_config \
            file://ssh_config \
            file://init \
@@ -31,11 +31,17 @@ SRC_URI = "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/opens
            file://sshd_check_keys \
            file://add-test-support-for-busybox.patch \
            "
-SRC_URI[sha256sum] = "f52f3f41d429aa9918e38cf200af225ccdd8e66f052da572870c89737646ec25"
+SRC_URI[sha256sum] = "7ca34b8bb24ae9e50f33792b7091b3841d7e1b440ff57bc9fabddf01e2ed1e24"
+
+# This CVE is specific to OpenSSH with the pam opie which we don't build/use here
+CVE_CHECK_WHITELIST += "CVE-2007-2768"
 
 # This CVE is specific to OpenSSH server, as used in Fedora and Red Hat Enterprise Linux 7
 # and when running in a Kerberos environment. As such it is not relevant to OpenEmbedded
 CVE_CHECK_WHITELIST += "CVE-2014-9278"
+
+# CVE only applies to some distributed RHEL binaries
+CVE_CHECK_WHITELIST += "CVE-2008-3844"
 
 PAM_SRC_URI = "file://sshd"
 
